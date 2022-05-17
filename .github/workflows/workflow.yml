@@ -163,8 +163,9 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: configure
         if: runner.os == 'Windows'
-        run: mkdir -p build && cd build && cmake -G "Visual Studio 16 2019" -A x64 ../ -DHUNTER_STATUS_DEBUG=ON
+        run:
+          vcpkg install boost
+          mkdir -p build && cd build && cmake -G "Visual Studio 16 2019" -A x64 ../ -DHUNTER_STATUS_DEBUG=ON
       - name: compile
         run: 
-          vcpkg install boost
           cd build && MSBuild /version && MSBuild bcos-utilities.sln /p:Configuration=Release /p:Platform=x64
