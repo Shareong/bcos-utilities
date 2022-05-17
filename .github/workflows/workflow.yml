@@ -40,10 +40,10 @@ jobs:
             hunter-clang-v1-notest-${{ runner.temp }}-
       - name: install macOS dependencies
         if: runner.os == 'macOS'
-        run: brew install ccache
+        run: brew install ccache boost
       - name: install Ubuntu dependencies
         if: runner.os == 'Linux'
-        run: sudo apt install -y git curl build-essential clang cmake ccache
+        run: sudo apt install -y git curl build-essential clang cmake ccache libboost1.71-all-dev
       - name: configure
         if: runner.os == 'macOS'
         run: export SDKROOT=$(xcrun --sdk macosx --show-sdk-path) && CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DTESTS=ON
@@ -122,11 +122,11 @@ jobs:
             hunter-centos-v1-notest-${{ runner.temp }}-
       - name: install CentOS dependencies
         run: |
-          yum install -y epel-release centos-release-scl
-          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-7 openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-7/enable
+          yum install -y epel-release centos-release-scl boost169-static boost169-devel
+          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-10 openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-7/enable
       - name: configure and compile
         run: |
-          source /opt/rh/devtoolset-7/enable
+          source /opt/rh/devtoolset-10/enable
           # mkdir -p build && cd build
           cmake3 . -DTESTS=ON
           make -j2
