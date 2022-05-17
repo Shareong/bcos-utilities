@@ -123,7 +123,7 @@ jobs:
       - name: install CentOS dependencies
         run: |
           yum install -y epel-release centos-release-scl boost169-static boost169-devel
-          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-10 openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-7/enable
+          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-10 openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-10/enable
       - name: configure and compile
         run: |
           source /opt/rh/devtoolset-10/enable
