@@ -1,5 +1,4 @@
 macro(install_dep dep_name dep_version)
-    list(LENGTH ARGN ARGNS)
     message("Require ${dep_name} ${dep_version} for components: ${ARGN}")
     set(all_FOUND true)
 

@@ -166,4 +166,5 @@ jobs:
         run: mkdir -p build && cd build && cmake -G "Visual Studio 16 2019" -A x64 ../ -DHUNTER_STATUS_DEBUG=ON
       - name: compile
         run: 
+          vcpkg install boost
           cd build && MSBuild /version && MSBuild bcos-utilities.sln /p:Configuration=Release /p:Platform=x64
