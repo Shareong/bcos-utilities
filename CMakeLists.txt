@@ -47,8 +47,6 @@ include_directories(${CMAKE_INSTALL_INCLUDEDIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# install dependencies
-hunter_add_package(Boost COMPONENTS all)
 # for compile
 set(BCOS_UTILITIES_TARGET "bcos-utilities")
 add_subdirectory(bcos-utilities)
