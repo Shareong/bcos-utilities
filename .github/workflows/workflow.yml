@@ -83,7 +83,7 @@ jobs:
             cache-gcc-v1-notest-${{ runner.temp }}-${{ github.base_ref }}-
             cache-gcc-v1-notest-${{ runner.temp }}-
       - name: install Ubuntu dependencies
-        run: sudo apt install -y git curl build-essential cmake ccache lcov
+        run: sudo apt install -y git curl build-essential cmake ccache lcov libboost1.71-dev
       - name: configure
         run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=on -DHUNTER_CONFIGURATION_TYPES=Debug
       - name: compile
