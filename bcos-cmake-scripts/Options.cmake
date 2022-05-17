@@ -74,6 +74,8 @@ macro(configure_project)
         add_definitions(-DFISCO_DEBUG)
     endif()
 
+    default_option(FORCE_HUNTER_DEP OFF)
+
     # Suffix like "-rc1" e.t.c. to append to versions wherever needed.
     if (NOT DEFINED VERSION_SUFFIX)
         set(VERSION_SUFFIX "")
@@ -97,6 +99,7 @@ macro(print_config NAME)
     message("-- IPO                Enable IPO optimization      ${IPO}")
     message("-- SANITIZE           Enable sanitize              ${SANITIZE}")
     message("-- DEBUG              Enable debug                 ${DEBUG}")
+    message("-- FORCE_HUNTER_DEP   Force use hunter dep         ${FORCE_HUNTER_DEP}")
     message("------------------------------------------------------------------------")
     message("")
 endmacro()
