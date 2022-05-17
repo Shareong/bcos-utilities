@@ -40,10 +40,10 @@ jobs:
             hunter-clang-v1-notest-${{ runner.temp }}-
       - name: install macOS dependencies
         if: runner.os == 'macOS'
-        run: brew install ccache
+        run: brew install ccache boost@1.76
       - name: install Ubuntu dependencies
         if: runner.os == 'Linux'
-        run: sudo apt install -y git curl build-essential clang cmake ccache
+        run: sudo apt install -y git curl build-essential clang cmake ccache libboost1.71-all-dev
       - name: configure
         if: runner.os == 'macOS'
         run: export SDKROOT=$(xcrun --sdk macosx --show-sdk-path) && CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DTESTS=ON
@@ -83,7 +83,7 @@ jobs:
             cache-gcc-v1-notest-${{ runner.temp }}-${{ github.base_ref }}-
             cache-gcc-v1-notest-${{ runner.temp }}-
       - name: install Ubuntu dependencies
-        run: sudo apt install -y git curl build-essential cmake ccache lcov
+        run: sudo apt install -y git curl build-essential cmake ccache lcov libboost1.71-all-dev
       - name: configure
         run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=on -DHUNTER_CONFIGURATION_TYPES=Debug
       - name: compile
@@ -123,10 +123,10 @@ jobs:
       - name: install CentOS dependencies
         run: |
           yum install -y epel-release centos-release-scl
-          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-7 openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-7/enable
+          yum install -y git make gcc gcc-c++ glibc-static glibc-devel cmake3 ccache devtoolset-10 boost169-static boost169-devel openssl libzstd-devel zlib-devel flex bison python-devel python3-devel && source /opt/rh/devtoolset-10/enable
       - name: configure and compile
         run: |
-          source /opt/rh/devtoolset-7/enable
+          source /opt/rh/devtoolset-10/enable
           # mkdir -p build && cd build
           cmake3 . -DTESTS=ON
           make -j2
@@ -163,7 +163,8 @@ jobs:
         uses: microsoft/setup-msbuild@v1.1
       - name: configure
         if: runner.os == 'Windows'
-        run: mkdir -p build && cd build && cmake -G "Visual Studio 16 2019" -A x64 ../ -DHUNTER_STATUS_DEBUG=ON
+        run:
+          vcpkg install boost && mkdir -p build && cd build && cmake -G "Visual Studio 16 2019" -A x64 ../ -DHUNTER_STATUS_DEBUG=ON
       - name: compile
         run: 
           cd build && MSBuild /version && MSBuild bcos-utilities.sln /p:Configuration=Release /p:Platform=x64
