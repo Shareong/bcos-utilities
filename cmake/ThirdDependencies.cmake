@@ -8,7 +8,7 @@ macro(install_dep dep_name dep_version)
         endif()
     endif()
 
-    if(NOT ${dep_name}_FOUND OR FORCE_HUNTER_DEP)
+    if(NOT ${${dep_name}_FOUND} OR FORCE_HUNTER_DEP)
         message("Not found local dependency ${dep_components}! Use hunter")
         if(${ARGNS} GREATER 0)
             hunter_add_package(${dep_name} REQUIRED)
