@@ -46,7 +46,7 @@ jobs:
         run: sudo apt install -y git curl build-essential clang cmake ccache libboost1.71-all-dev
       - name: configure
         if: runner.os == 'macOS'
-        run: export SDKROOT=$(xcrun --sdk macosx --show-sdk-path) && CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DTESTS=ON
+        run: export SDKROOT=$(xcrun --sdk macosx --show-sdk-path) && CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DTESTS=ON -DHUNTER_ENABLED=OFF
       - name: configure
         if: runner.os == 'Linux'
         run: CC=/usr/bin/clang CXX=/usr/bin/clang++ cmake . -DTESTS=ON -DHUNTER_CONFIGURATION_TYPES=Debug
@@ -85,7 +85,7 @@ jobs:
       - name: install Ubuntu dependencies
         run: sudo apt install -y git curl build-essential cmake ccache lcov libboost1.71-all-dev
       - name: configure
-        run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=ON -DHUNTER_CONFIGURATION_TYPES=Debug -DFORCE_HUNTER_DEP=OFF
+        run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=ON -DHUNTER_CONFIGURATION_TYPES=Debug -DHUNTER_ENABLED=OFF
       - name: compile
         run: make -j2
       - name: run test
@@ -128,7 +128,7 @@ jobs:
         run: |
           source /opt/rh/devtoolset-10/enable
           # mkdir -p build && cd build
-          cmake3 . -DTESTS=ON
+          cmake3 . -DTESTS=ON  -DBOOST_INCLUDEDIR=/usr/include/boost169/ -DBOOST_LIBRARYDIR=/usr/lib64/boost169/ -DHUNTER_ENABLED=OFF
           make -j2
           CTEST_OUTPUT_ON_FAILURE=TRUE make test ARGS="--output-on-failure"
   build_with_windows:
