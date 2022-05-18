@@ -28,13 +28,16 @@ set(BCOS_CMAKE_SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bcos-cmake-scripts)
 set(BCOS_UTILITIES_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake" CACHE PATH "The cmake path for the library")
 list(APPEND CMAKE_MODULE_PATH ${BCOS_CMAKE_SCRIPTS_DIR})
 list(APPEND CMAKE_MODULE_PATH ${BCOS_UTILITIES_CMAKE_DIR})
-#init hunter
-include(HunterGate)
-HunterGate(
-    URL "https://${URL_BASE}/FISCO-BCOS/hunter/archive/203039fdd0826330facd9c3841082dbf35d0c808.tar.gz"
-    SHA1 "26ca1840eb26da410913469f2f278569c8d383ae"
-    FILEPATH "${BCOS_UTILITIES_CMAKE_DIR}/config.cmake"
-)
+
+if(HUNTER_BOOST)
+    #init hunter
+    include(HunterGate)
+    HunterGate(
+        URL "https://${URL_BASE}/FISCO-BCOS/hunter/archive/203039fdd0826330facd9c3841082dbf35d0c808.tar.gz"
+        SHA1 "26ca1840eb26da410913469f2f278569c8d383ae"
+        FILEPATH "${BCOS_UTILITIES_CMAKE_DIR}/config.cmake"
+    )
+endif()
 project(bcos-utilities VERSION "1.0.0")
 set(VERSION_SUFFIX "-rc2")
 
