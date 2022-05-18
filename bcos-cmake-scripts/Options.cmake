@@ -74,7 +74,7 @@ macro(configure_project)
         add_definitions(-DFISCO_DEBUG)
     endif()
 
-    default_option(FORCE_HUNTER_DEP OFF)
+    default_option(FORCE_HUNTER_DEP ON)
 
     # Suffix like "-rc1" e.t.c. to append to versions wherever needed.
     if (NOT DEFINED VERSION_SUFFIX)

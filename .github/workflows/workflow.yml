@@ -85,7 +85,7 @@ jobs:
       - name: install Ubuntu dependencies
         run: sudo apt install -y git curl build-essential cmake ccache lcov libboost1.71-all-dev
       - name: configure
-        run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=on -DHUNTER_CONFIGURATION_TYPES=Debug
+        run: cmake . -DTESTS=ON -DCOVERAGE=ON -DDEBUG=ON -DHUNTER_CONFIGURATION_TYPES=Debug -DFORCE_HUNTER_DEP=OFF
       - name: compile
         run: make -j2
       - name: run test
