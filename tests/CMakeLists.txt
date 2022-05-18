@@ -19,7 +19,7 @@ file(GLOB_RECURSE SOURCES "*.cpp" "*.h" "*.sol")
 
 # cmake settings
 set(TEST_BINARY_NAME test-bcos-utilities)
-install_dep(Boost 1.69.0 unit_test_framework)
+find_package(Boost 1.69.0 REQUIRED COMPONENTS unit_test_framework)
 
 add_executable(${TEST_BINARY_NAME} ${SOURCES})
 target_include_directories(${TEST_BINARY_NAME} PRIVATE . ${CMAKE_SOURCE_DIR})
