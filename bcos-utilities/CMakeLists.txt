@@ -2,7 +2,7 @@ file(GLOB SRC_LIST "*.cpp")
 file(GLOB HEADERS "*.h")
 
 SET(Boost_USE_STATIC_LIBS ON)
-if(HUNTER_BOOST)
+if(HUNTER_ENABLED)
     hunter_add_package(Boost COMPONENTS all)
 endif()
 find_package(Boost 1.69.0 REQUIRED COMPONENTS log chrono system filesystem iostreams thread)
