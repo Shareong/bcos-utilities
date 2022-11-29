@@ -22,11 +22,15 @@
 
 #include "DataConvertUtility.h"
 #include "Exceptions.h"
+#include <boost/algorithm/hex.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/throw_exception.hpp>
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <iterator>
 #include <random>
+#include <stdexcept>
 
 namespace bcos
 {
@@ -62,7 +66,7 @@ public:
         N * 8, boost::multiprecision::unsigned_magnitude, boost::multiprecision::unchecked, void>>;
     enum
     {
-        size = N
+        SIZE = N
     };
     // construct FixedBytes from string
     enum StringDataType
@@ -102,6 +106,45 @@ public:
       : FixedBytes()
     {
         constructFixedBytes(bytesConstRef(_bytesData.data(), _bytesData.size()), _alignType);
+    }
+
+    explicit FixedBytes(std::string_view view, StringDataType type,
+        DataAlignType _alignType = DataAlignType::AlignRight)
+    {
+        if (view.size() >= 2 && (view[0] == '0' && view[1] == 'x'))
+        {
+            view = view.substr(2);
+        }
+
+        if (type == FromHex) [[likely]]
+        {
+            if ((view.size() > static_cast<std::string_view::size_type>(N * 2)) ||
+                (view.size() % 2 != 0)) [[unlikely]]
+            {
+                BOOST_THROW_EXCEPTION(std::invalid_argument{"Invalid input string!"});
+            }
+
+            if (view.size() != N)
+            {}
+
+            auto startIndex = 0;
+            if (_alignType == DataAlignType::AlignRight) [[likely]]
+            {
+                startIndex = N - (view.size() / 2);
+                std::fill(m_data.begin(), m_data.begin() + startIndex, 0);
+            }
+            else
+            {
+                auto endIndex = view.size() / 2;
+                std::fill(m_data.begin() + endIndex, m_data.end(), 0);
+            }
+            boost::algorithm::unhex(view.begin(), view.end(), m_data.begin() + startIndex);
+        }
+        else
+        {
+            constructFixedBytes(
+                bytesConstRef((const bcos::byte*)view.data(), view.size()), _alignType);
+        }
     }
 
     /**
@@ -337,6 +380,9 @@ public:
         return ret;
     }
 
+    auto begin() { return m_data.begin(); }
+    auto end() { return m_data.end(); }
+    auto size() const { return SIZE; }
     void clear() { m_data.fill(0); }
 
 private:
@@ -662,6 +708,7 @@ inline Address toAddress(std::string const& _address)
     }
     BOOST_THROW_EXCEPTION(InvalidAddress());
 }
+
 }  // namespace bcos
 
 namespace std

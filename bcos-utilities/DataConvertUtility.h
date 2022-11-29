@@ -74,6 +74,12 @@ Out fromHex(const Hex& hex, std::string_view prefix = std::string_view())
     return out;
 }
 
+template <class Hex, class Out = bytes>
+Out fromHexWithPrefix(const Hex& hex)
+{
+    return fromHex(hex, "0x");
+}
+
 /**
  * @brief convert the specified bytes data into hex string
  *
@@ -127,7 +133,12 @@ std::shared_ptr<std::string> toHexString(T const& _data)
 template <class T>
 std::string toHexStringWithPrefix(T const& _data)
 {
-    return *toHexString(_data.begin(), _data.end(), "0x");
+    std::string out;
+    out.reserve(_data.size() * 2 + 2);
+    out = "0x";
+    boost::algorithm::hex_lower(_data.begin(), _data.end(), std::back_inserter(out));
+
+    return out;
 }
 
 /**
@@ -221,8 +232,7 @@ inline bytes toCompactBigEndian(T _val, unsigned _min = 0)
         "only unsigned types or bigint supported");  // bigint does not carry sign bit on shift
     unsigned i = 0;
     for (T v = _val; v; ++i, v >>= 8)
-    {
-    }
+    {}
     bytes ret((std::max)(_min, i), 0);
     toBigEndian(_val, ret);
     return ret;
@@ -241,8 +251,7 @@ inline std::string toCompactBigEndianString(T _val, unsigned _min = 0)
         "only unsigned types or bigint supported");  // bigint does not carry sign bit on shift
     unsigned i = 0;
     for (T v = _val; v; ++i, v >>= 8)
-    {
-    }
+    {}
     std::string ret((std::max)(_min, i), '\0');
     toBigEndian(_val, ret);
     return ret;
@@ -252,7 +261,7 @@ inline std::string toCompactBigEndianString(T _val, unsigned _min = 0)
 // Concatenate two vectors of elements of POD types.
 template <class T>
 inline std::vector<T>& operator+=(
-    std::vector<typename std::enable_if<std::is_pod<T>::value, T>::type>& _a,
+    std::vector<typename std::enable_if<std::is_trivial<T>::value, T>::type>& _a,
     std::vector<T> const& _b)
 {
     auto s = _a.size();
@@ -264,7 +273,7 @@ inline std::vector<T>& operator+=(
 /// Concatenate two vectors of elements.
 template <class T>
 inline std::vector<T>& operator+=(
-    std::vector<typename std::enable_if<!std::is_pod<T>::value, T>::type>& _a,
+    std::vector<typename std::enable_if<!std::is_trivial<T>::value, T>::type>& _a,
     std::vector<T> const& _b)
 {
     _a.reserve(_a.size() + _b.size());

@@ -77,25 +77,10 @@ extern LogLevel c_statLogLevel;
 void setFileLogLevel(LogLevel const& _level);
 void setStatLogLevel(LogLevel const& _level);
 
-#if defined(WIN32) || defined(WIN64) || defined(_WIN32) || defined(_WIN32_)
 #define BCOS_LOG(level)                                \
     if (bcos::LogLevel::level >= bcos::c_fileLogLevel) \
-    BOOST_LOG_SEV(bcos::FileLoggerHandler,             \
-        (boost::log::v2s_mt_nt6::trivial::severity_level)(bcos::LogLevel::level))
-
-#define BCOS_STAT_LOG(level)                           \
-    if (bcos::LogLevel::level >= bcos::c_statLogLevel) \
-    BOOST_LOG_SEV(bcos::StatFileLoggerHandler,         \
-        (boost::log::v2s_mt_nt6::trivial::severity_level)(bcos::LogLevel::level))
-#else
-#define BCOS_LOG(level)                                \
-    if (bcos::LogLevel::level >= bcos::c_fileLogLevel) \
-    BOOST_LOG_SEV(bcos::FileLoggerHandler,             \
-        (boost::log::v2s_mt_posix::trivial::severity_level)(bcos::LogLevel::level))
-
-#define BCOS_STAT_LOG(level)                           \
-    if (bcos::LogLevel::level >= bcos::c_statLogLevel) \
-    BOOST_LOG_SEV(bcos::StatFileLoggerHandler,         \
-        (boost::log::v2s_mt_posix::trivial::severity_level)(bcos::LogLevel::level))
-#endif
+    BOOST_LOG_SEV(                                     \
+        bcos::FileLoggerHandler, (boost::log::trivial::severity_level)(bcos::LogLevel::level))
+// for block number log
+#define BLOCK_NUMBER(NUMBER) "[blk-" << (NUMBER) << "]"
 }  // namespace bcos

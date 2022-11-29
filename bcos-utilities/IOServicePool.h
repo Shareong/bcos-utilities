@@ -53,13 +53,14 @@ public:
         m_running = true;
         for (size_t i = 0; i < m_ioServices.size(); ++i)
         {
-            m_works[i] = std::unique_ptr<Work>(new Work(m_ioServices[i]->get_executor()));
+            m_works[i] = std::make_unique<Work>(m_ioServices[i]->get_executor());
         }
 
         // one io_context per thread
         for (size_t i = 0; i < m_ioServices.size(); ++i)
         {
-            m_threads.emplace_back([this, i]() { (m_ioServices[i])->run(); });
+            auto ioService = m_ioServices[i];
+            m_threads.emplace_back([ioService]() { ioService->run(); });
         }
     }
 
