@@ -91,13 +91,13 @@ public:
         // stop the thread
         for (auto& thread : m_threads)
         {
-            if (thread.get_id() != std::this_thread::get_id())
+            if (thread.get_id() == std::this_thread::get_id())
             {
-                thread.join();
+                thread.detach();
             }
             else
             {
-                thread.detach();
+                thread.join();
             }
         }
     }
