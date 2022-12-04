@@ -28,18 +28,11 @@
 #include <memory>
 #include <string>
 
-#if 0
 #define BCOS_ERROR(errorCode, errorMessage) \
     ::bcos::Error::buildError(BOOST_CURRENT_FUNCTION, __FILE__, __LINE__, errorCode, errorMessage)
 #define BCOS_ERROR_WITH_PREV(errorCode, errorMessage, prev) \
     ::bcos::Error::buildError(                              \
         BOOST_CURRENT_FUNCTION, __FILE__, __LINE__, errorCode, errorMessage, prev)
-#endif
-
-#define BCOS_ERROR(errorCode, errorMessage) \
-    ::bcos::Error::buildError(BOOST_CURRENT_LOCATION.to_string(), errorCode, errorMessage)
-#define BCOS_ERROR_WITH_PREV(errorCode, errorMessage, prev) \
-    ::bcos::Error::buildError(BOOST_CURRENT_LOCATION.to_string(), errorCode, errorMessage, prev)
 
 #define BCOS_ERROR_PTR(code, message) std::make_shared<Error>(BCOS_ERROR(code, message))
 #define BCOS_ERROR_WITH_PREV_PTR(code, message, prev) \
