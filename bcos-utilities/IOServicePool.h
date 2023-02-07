@@ -18,6 +18,7 @@
  */
 
 #pragma once
+#include "Log.h"
 #include <boost/asio.hpp>
 #include <memory>
 namespace bcos
@@ -60,7 +61,17 @@ public:
         for (size_t i = 0; i < m_ioServices.size(); ++i)
         {
             auto ioService = m_ioServices[i];
-            m_threads.emplace_back([ioService]() { ioService->run(); });
+            m_threads.emplace_back([ioService]() {
+                try
+                {
+                    ioService->run();
+                }
+                catch (std::exception const& e)
+                {
+                    BCOS_LOG(WARNING) << LOG_DESC("IOServicePool: ioService run exception")
+                                      << LOG_KV("msg", boost::diagnostic_information(e));
+                }
+            });
         }
     }
 
