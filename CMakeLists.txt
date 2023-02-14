@@ -49,13 +49,15 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # install dependencies
 hunter_add_package(Boost COMPONENTS all)
-hunter_add_package(range-v3)
-
+if(NOT MSVC)
+    hunter_add_package(range-v3)
+    find_package(range-v3 CONFIG REQUIRED)
+endif()
 # for compile
 set(BCOS_UTILITIES_TARGET "bcos-utilities")
 add_subdirectory(bcos-utilities)
 
-if (TESTS)  
+if (TESTS)
     enable_testing()
     set(CTEST_OUTPUT_ON_FAILURE TRUE)
     add_subdirectory(tests)
