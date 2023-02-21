@@ -22,6 +22,7 @@
 
 #pragma once
 #include "Common.h"
+#include "Log.h"
 #include <boost/asio.hpp>
 #include <boost/thread/thread.hpp>
 #include <iosfwd>
@@ -49,9 +50,15 @@ public:
     void stop()
     {
         _ioService.stop();
+        BCOS_LOG(WARNING) << LOG_DESC("stop thread")
+                          << LOG_KV("threadName", _threadName);
         if (!_workers.is_this_thread_in())
         {
+            BCOS_LOG(WARNING) << LOG_DESC("before join")
+                              << LOG_KV("threadName", _threadName);
             _workers.join_all();
+            BCOS_LOG(WARNING) << LOG_DESC("after join")
+                              << LOG_KV("threadName", _threadName);
         }
     }
 
