@@ -23,6 +23,6 @@ set(TEST_BINARY_NAME test-bcos-utilities)
 add_executable(${TEST_BINARY_NAME} ${SOURCES})
 target_include_directories(${TEST_BINARY_NAME} PRIVATE . ${CMAKE_SOURCE_DIR})
 
-find_package(Boost CONFIG QUIET REQUIRED unit_test_framework)
-target_link_libraries(${TEST_BINARY_NAME} ${BCOS_UTILITIES_TARGET} Boost::unit_test_framework)
+find_package(Boost CONFIG QUIET REQUIRED unit_test_framework iostreams serialization)
+target_link_libraries(${TEST_BINARY_NAME} PUBLIC ${BCOS_UTILITIES_TARGET} Boost::unit_test_framework Boost::iostreams Boost::serialization ZLIB::zlib)
 add_test(NAME test-rpc WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} COMMAND ${TEST_BINARY_NAME})

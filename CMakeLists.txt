@@ -36,7 +36,6 @@ HunterGate(
     FILEPATH "${BCOS_UTILITIES_CMAKE_DIR}/config.cmake"
 )
 project(bcos-utilities VERSION "1.0.0")
-set(VERSION_SUFFIX "-rc3")
 
 # basic settings
 include(Options)
@@ -48,7 +47,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # install dependencies
-hunter_add_package(Boost COMPONENTS all)
+hunter_add_package(ZLIB)
+hunter_add_package(Boost COMPONENTS all iostreams)
+
 if(NOT MSVC)
     hunter_add_package(range-v3)
     find_package(range-v3 CONFIG REQUIRED)

@@ -23,6 +23,7 @@
 
 #include <boost/log/attributes/constant.hpp>
 #include <boost/log/attributes/scoped_attribute.hpp>
+#include <boost/log/sinks/text_file_backend.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/trivial.hpp>
 
@@ -63,12 +64,12 @@ extern boost::log::sources::severity_channel_logger_mt<boost::log::trivial::seve
 
 enum LogLevel
 {
-    FATAL = boost::log::trivial::fatal,
-    ERROR = boost::log::trivial::error,
-    WARNING = boost::log::trivial::warning,
-    INFO = boost::log::trivial::info,
+    TRACE = boost::log::trivial::trace,
     DEBUG = boost::log::trivial::debug,
-    TRACE = boost::log::trivial::trace
+    INFO = boost::log::trivial::info,
+    WARNING = boost::log::trivial::warning,
+    ERROR = boost::log::trivial::error,
+    FATAL = boost::log::trivial::fatal,
 };
 
 extern LogLevel c_fileLogLevel;
@@ -77,25 +78,18 @@ extern LogLevel c_statLogLevel;
 void setFileLogLevel(LogLevel const& _level);
 void setStatLogLevel(LogLevel const& _level);
 
-#if defined(WIN32) || defined(WIN64) || defined(_WIN32) || defined(_WIN32_)
 #define BCOS_LOG(level)                                \
     if (bcos::LogLevel::level >= bcos::c_fileLogLevel) \
-    BOOST_LOG_SEV(bcos::FileLoggerHandler,             \
-        (boost::log::v2s_mt_nt6::trivial::severity_level)(bcos::LogLevel::level))
+    BOOST_LOG_SEV(                                     \
+        bcos::FileLoggerHandler, (boost::log::trivial::severity_level)(bcos::LogLevel::level))
+// for block number log
+#define BLOCK_NUMBER(NUMBER) "[blk-" << (NUMBER) << "]"
 
-#define BCOS_STAT_LOG(level)                           \
-    if (bcos::LogLevel::level >= bcos::c_statLogLevel) \
-    BOOST_LOG_SEV(bcos::StatFileLoggerHandler,         \
-        (boost::log::v2s_mt_nt6::trivial::severity_level)(bcos::LogLevel::level))
-#else
-#define BCOS_LOG(level)                                \
-    if (bcos::LogLevel::level >= bcos::c_fileLogLevel) \
-    BOOST_LOG_SEV(bcos::FileLoggerHandler,             \
-        (boost::log::v2s_mt_posix::trivial::severity_level)(bcos::LogLevel::level))
+namespace log
+{
+boost::shared_ptr<boost::log::sinks::file::collector> make_collector(
+    boost::filesystem::path const& target_dir, uintmax_t max_size, uintmax_t min_free_space,
+    uintmax_t max_files, bool convert_tar_gz);
+}
 
-#define BCOS_STAT_LOG(level)                           \
-    if (bcos::LogLevel::level >= bcos::c_statLogLevel) \
-    BOOST_LOG_SEV(bcos::StatFileLoggerHandler,         \
-        (boost::log::v2s_mt_posix::trivial::severity_level)(bcos::LogLevel::level))
-#endif
 }  // namespace bcos

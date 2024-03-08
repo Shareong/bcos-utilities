@@ -74,17 +74,13 @@ macro(configure_project)
         add_definitions(-DFISCO_DEBUG)
     endif()
 
-    # Suffix like "-rc1" e.t.c. to append to versions wherever needed.
-    if (NOT DEFINED VERSION_SUFFIX)
-        set(VERSION_SUFFIX "")
-    endif()
     print_config(${NAME})
 endmacro()
 
 macro(print_config NAME)
     message("")
     message("------------------------------------------------------------------------")
-    message("-- Configuring ${NAME} ${PROJECT_VERSION}${VERSION_SUFFIX}")
+    message("-- Configuring ${NAME} ${PROJECT_VERSION}")
     message("------------------------------------------------------------------------")
     message("-- CMake              Cmake version and location   ${CMAKE_VERSION} (${CMAKE_COMMAND})")
     message("-- Compiler           C++ compiler version         ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
