@@ -73,8 +73,6 @@ macro(configure_project)
     if (DEBUG)
         add_definitions(-DFISCO_DEBUG)
     endif()
-
-    print_config(${NAME})
 endmacro()
 
 macro(print_config NAME)

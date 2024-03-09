@@ -53,6 +53,14 @@ if (("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU") OR ("${CMAKE_CXX_COMPILER_ID}" MA
     # build deps lib Release
     set(_only_release_configuration "-DCMAKE_BUILD_TYPE=Release")
 
+    # Some Linux-specific Clang settings.  We don't want these for OS X.
+    if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
+        # Tell Boost that we're using Clang's libc++.   Not sure exactly why we need to do.
+        add_definitions(-DBOOST_ASIO_HAS_CLANG_LIBCXX)
+        # Fix for Boost UUID on old kernel version Linux.  See https://github.com/boostorg/uuid/issues/91
+        add_definitions(-DBOOST_UUID_RANDOM_PROVIDER_FORCE_POSIX)
+    endif()
+
     if(BUILD_STATIC)
         SET(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
         SET(BUILD_SHARED_LIBRARIES OFF)

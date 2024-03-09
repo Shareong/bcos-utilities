@@ -14,8 +14,6 @@
 # limitations under the License.
 # ------------------------------------------------------------------------------
 # File: InstallConfig.cmake
-# Function: Public cmake files for building projects based on hunter
-#           may be used by multiple projects
 # ------------------------------------------------------------------------------
 
 include(GNUInstallDirs)

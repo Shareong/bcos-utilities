@@ -1,0 +1,84 @@
+{
+  "name": "bcos-utilities",
+  "version-string": "1.0.0",
+  "homepage": "https://github.com/FISCO-BCOS/bcos-utilities",
+  "description": "bcos-utilities",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    },
+    "boost-log",
+    "boost-filesystem",
+    "boost-system",
+    "boost-chrono",
+    "boost-thread",
+    "boost-iostreams",
+    "boost-serialization",
+    "boost-test",
+    "boost-multiprecision",
+    "boost-program-options",
+    "tbb",
+    "zlib",
+    {
+        "name": "openssl",
+        "version>=": "1.1.1-tassl"
+    }
+  ],
+  "builtin-baseline": "51b14cd4e1230dd51c11ffeff6f7d53c61cc5297",
+  "overrides": [
+    {
+      "name": "boost-log",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-filesystem",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-system",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-serialization",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-chrono",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-iostreams",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-thread",
+      "version": "1.83.0"
+    },
+    {
+      "name": "boost-test",
+      "version": "1.83.0"
+    },
+    {
+        "name": "boost-multiprecision",
+        "version": "1.83.0"
+    },
+    {
+      "name": "boost-program-options",
+      "version": "1.83.0"
+    },
+    {
+        "name": "tbb",
+        "version": "2021.8.0"
+    },
+    {
+      "name": "zlib",
+      "version": "1.2.12",
+      "port-version": 1
+    }
+  ]
+}

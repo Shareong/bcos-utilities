@@ -16,47 +16,37 @@
 # limitations under the License.
 #------------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 3.10)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "11.3" CACHE STRING "Minimum OS X deployment version")
+cmake_minimum_required(VERSION 3.14)
 
 if (NOT DEFINED URL_BASE)
     set(URL_BASE "github.com")
     # set(URL_BASE "github.com.cnpmjs.org")
 endif()
 
-set(BCOS_CMAKE_SCRIPTS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bcos-cmake-scripts)
-set(BCOS_UTILITIES_CMAKE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake" CACHE PATH "The cmake path for the library")
-list(APPEND CMAKE_MODULE_PATH ${BCOS_CMAKE_SCRIPTS_DIR})
-list(APPEND CMAKE_MODULE_PATH ${BCOS_UTILITIES_CMAKE_DIR})
-#init hunter
-include(HunterGate)
-HunterGate(
-    URL "https://${URL_BASE}/FISCO-BCOS/hunter/archive/162ff7cde3d843e43afdab8fe3214275c35ef168.tar.gz"
-    SHA1 "0ba8099fe89beb0d44986c750fe0d44040725d99"
-    FILEPATH "${BCOS_UTILITIES_CMAKE_DIR}/config.cmake"
-)
-project(bcos-utilities VERSION "1.0.0")
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# basic settings
+set(VERSION_SUFFIX "")
 include(Options)
 configure_project()
+
+# vcpkg init
+find_package(Git REQUIRED)
+execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
+
+project(bcos-utilities VERSION "1.0.0")
+
 include(CompilerSettings)
 
 include_directories(${CMAKE_INSTALL_INCLUDEDIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-# install dependencies
-hunter_add_package(ZLIB)
-hunter_add_package(Boost COMPONENTS all iostreams)
-
-if(NOT MSVC)
-    hunter_add_package(range-v3)
-    find_package(range-v3 CONFIG REQUIRED)
-endif()
 # for compile
 set(BCOS_UTILITIES_TARGET "bcos-utilities")
 add_subdirectory(bcos-utilities)
+
+print_config("bcos-utilities")
 
 if (TESTS)
     enable_testing()
@@ -82,9 +72,3 @@ include(InstallInclude)
 # for doxygen
 include(BuildDocs)
 buildDoc(doc)
-
-# for code coverage
-if (COVERAGE)
-    include(Coverage)
-    config_coverage("cov" "'/usr*' '${CMAKE_CURRENT_SOURCE_DIR}/bcos-cmake-scripts*' '${CMAKE_CURRENT_SOURCE_DIR}/test/bcos-test*'")
-endif ()

@@ -3,17 +3,8 @@ file(GLOB HEADERS "*.h")
 
 add_library(${BCOS_UTILITIES_TARGET} ${SRC_LIST} ${HEADERS})
 
-find_package(Boost CONFIG QUIET REQUIRED log chrono system filesystem iostreams thread serialization)
-find_package(ZLIB CONFIG REQUIRED)
-find_library(BOOST_LOG_SETUP_LIB
-             NAMES libboost_log_setup-mt-a64.a libboost_log_setup-mt-d-a64.a libboost_log_setup-mt.a libboost_log_setup-mt-d.a
-             PATHS ${HUNTER_INSTALL_DIR}
-             )
+# install dependencies
+find_package(ZLIB REQUIRED)
+find_package(Boost COMPONENTS log filesystem chrono thread serialization iostreams system)
+target_link_libraries(${BCOS_UTILITIES_TARGET} PUBLIC Boost::log Boost::chrono Boost::iostreams Boost::filesystem Boost::thread Boost::serialization Boost::system ZLIB::ZLIB)
 
-if(BOOST_LOG_SETUP_LIB)
-    message(STATUS "Found Boost.Log Setup library: ${BOOST_LOG_SETUP_LIB}")
-else()
-    message(FATAL_ERROR "Boost.Log Setup library not found")
-endif()
-
-target_link_libraries(${BCOS_UTILITIES_TARGET} PUBLIC Boost::log Boost::chrono Boost::iostreams Boost::filesystem Boost::thread Boost::serialization ${BOOST_LOG_SETUP_LIB} ZLIB::zlib)
