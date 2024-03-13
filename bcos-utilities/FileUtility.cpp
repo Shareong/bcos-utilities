@@ -18,6 +18,8 @@
 
 #include "FileUtility.h"
 #include <stdio.h>
+#include <boost/filesystem.hpp>
+#include <boost/filesystem/fstream.hpp>
 #include <cstdlib>
 #include <fstream>
 using namespace std;

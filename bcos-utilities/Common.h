@@ -17,7 +17,7 @@
 
 #pragma once
 
-//#include <sys/time.h>
+// #include <sys/time.h>
 #include <boost/algorithm/string.hpp>
 #include <boost/container/options.hpp>
 #include <chrono>
@@ -297,7 +297,7 @@ private:
 
 std::string newSeq();
 void pthread_setThreadName(std::string const& _n);
-
+std::string pthread_getThreadName();
 /*
 template <class... Ts>
 struct overloaded : Ts...
