@@ -135,16 +135,6 @@ if(("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU") OR("${CMAKE_CXX_COMPILER_ID}" MATC
         add_compile_options(-fstack-protector)
         add_compile_options(-Winconsistent-missing-override)
         add_compile_options(-foptimize-sibling-calls)
-
-        # Some Linux-specific Clang settings.  We don't want these for OS X.
-        if("${CMAKE_SYSTEM_NAME}" MATCHES "Linux")
-            # Tell Boost that we're using Clang's libc++.   Not sure exactly why we need to do.
-            add_definitions(-DBOOST_ASIO_HAS_CLANG_LIBCXX)
-            # Fix for Boost UUID on old kernel version Linux.  See https://github.com/boostorg/uuid/issues/91
-            add_definitions(-DBOOST_UUID_RANDOM_PROVIDER_FORCE_POSIX)
-            # Use fancy colors in the compiler diagnostics
-            add_compile_options(-fcolor-diagnostics)
-        endif()
     endif()
 
     if(SANITIZE_ADDRESS)
