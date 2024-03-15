@@ -129,7 +129,7 @@ void BoostLogInitializer::initLog(boost::property_tree::ptree const& _pt,
     std::string const& _logger, std::string const& _logPrefix)
 {
     // replace ~ with %, because only % is used as escape character in boost log
-    char toReplace = '~';
+    char toReplace = '`';
     char replacement = '%';
 
     m_running.store(true);
