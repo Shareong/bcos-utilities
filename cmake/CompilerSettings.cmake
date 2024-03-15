@@ -40,7 +40,6 @@ if(("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU") OR("${CMAKE_CXX_COMPILER_ID}" MATC
     add_compile_options(-Wno-unused-variable)
     add_compile_options(-Wno-unknown-pragmas)
     add_compile_options(-Wno-deprecated-declarations)
-    add_compile_options(-Wno-error=deprecated-declarations)
     add_compile_options(-fno-omit-frame-pointer)
     add_compile_options(-Wno-error=strict-aliasing)
 
